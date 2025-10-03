@@ -1,1 +1,80 @@
-/* You can add global styles to this file, and also import other style files */
+/* Container */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4e73df, #1cc88a);
+  font-family: Arial, sans-serif;
+}
+
+/* Card */
+.auth-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Title */
+.auth-card h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* Form */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Input */
+.auth-form input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #4e73df;
+}
+
+/* Button */
+.auth-form button {
+  background: #4e73df;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.auth-form button:hover {
+  background: #2e59d9;
+}
+
+/* Link */
+.auth-footer {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 14px;
+}
+
+.auth-footer a {
+  color: #1cc88a;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
