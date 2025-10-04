@@ -14,8 +14,8 @@ export class AuthGuard implements CanActivate {
   canActivate(): boolean {
     const token = this.auth.getAccessToken();
     if (token) {
-      const decoded = this.parseJwt(token);
-      const expiry = decoded.exp * 1000; // exp is in seconds
+      const decoded = this.auth.decodeToken(token);
+      const expiry = (decoded?.exp??0) * 1000; // exp is in seconds
       if (Date.now() < expiry) {
         return true;
       } else {

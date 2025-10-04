@@ -1,0 +1,41 @@
+<div class="customer-container">
+  <h2>Add Customer</h2>
+
+  <form [formGroup]="customerForm" (ngSubmit)="submit()">
+    <div>
+      <label>Name</label>
+      <input type="text" formControlName="name" />
+      <div *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched">
+        Name is required
+      </div>
+    </div>
+
+    <div>
+      <label>Email</label>
+      <input type="email" formControlName="email" />
+      <div *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched">
+        Enter a valid email
+      </div>
+    </div>
+
+    <div>
+      <label>Adhar Number</label>
+      <input type="text" formControlName="adharNumber" />
+      <div *ngIf="customerForm.get('adharNumber')?.invalid && customerForm.get('adharNumber')?.touched">
+        Adhar must be 12 digits
+      </div>
+    </div>
+
+    <div>
+      <label>Pending Balance</label>
+      <input type="number" formControlName="pendingBalance" />
+      <div *ngIf="customerForm.get('pendingBalance')?.invalid && customerForm.get('pendingBalance')?.touched">
+        Must be greater than 0
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="customerForm.invalid">Add Customer</button>
+  </form>
+
+  <p *ngIf="message" class="msg">{{ message }}</p>
+</div>

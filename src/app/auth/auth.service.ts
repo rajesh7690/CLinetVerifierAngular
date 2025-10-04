@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { JwtPayload } from '../Model/commonModel';
 
 interface AuthResponse {
   success: boolean;
@@ -43,4 +44,19 @@ export class AuthService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   }
+
+  decodeToken(token?: string): JwtPayload | null {
+    try {
+      const jwt = token || this.getAccessToken();
+      if (!jwt) return null;
+
+      const payloadBase64 = jwt.split('.')[1]; // header.payload.signature
+      const payloadJson = atob(payloadBase64);
+      return JSON.parse(payloadJson);
+    } catch (error) {
+      console.error('Failed to decode JWT', error);
+      return null;
+    }
+  }
+
 }
