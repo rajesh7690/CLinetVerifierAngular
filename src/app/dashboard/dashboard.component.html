@@ -1,12 +1,45 @@
-<div class="dashboard-container">
-  <h2>Welcome {{ shopkeeperName || 'Shopkeeper' }}</h2>
-  <button (click)="logout()">Logout</button>
+<div class="container mt-4">
+  <div class="card shadow-sm border-0 rounded-4">
+    <div class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center">
+      <h4 class="mb-0"><i class="fa-solid fa-users me-2"></i>Customer List</h4>
+    </div>
 
-  <nav class="dashboard-nav">
-    <a routerLink="/add-customer">Add Customer</a> |
-    <a routerLink="/dashboard">Dashboard Home</a>
-    <!-- you can add more nav links here -->
-  </nav>
+    <div class="card-body">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Aadhar</th>
+            <th>Pending Balance</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of customers; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.adharNumber }}</td>
+            <td>₹{{ customer.pendingBalance }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="editCustomer(customer)">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteCustomer(customer)">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
 
-  <router-outlet></router-outlet>
+          <tr *ngIf="customers.length === 0">
+            <td colspan="6" class="text-center text-muted py-4">
+              No customers found.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

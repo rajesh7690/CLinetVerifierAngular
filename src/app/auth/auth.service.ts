@@ -26,6 +26,12 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password });
   }
 
+  refreshToken(): Observable<any> {
+    const Token = this.getAccessToken();
+    const refreshToken = this.getRefreshToken();
+    return this.http.post(`${this.apiUrl}/refresh`, { Token, refreshToken });
+  }
+
   // store token in localStorage/sessionStorage
   setTokens(token: string, refreshToken: string) {
     localStorage.setItem('accessToken', token);

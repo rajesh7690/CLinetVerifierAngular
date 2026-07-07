@@ -1,41 +1,60 @@
-<div class="customer-container">
-  <h2>Add Customer</h2>
-
-  <form [formGroup]="customerForm" (ngSubmit)="submit()">
-    <div>
-      <label>Name</label>
-      <input type="text" formControlName="name" />
-      <div *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched">
-        Name is required
-      </div>
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-header bg-primary text-white text-center rounded-top-4">
+      <h3 class="mb-0"><i class="fa-solid fa-user-plus me-2"></i>Add Customer</h3>
     </div>
 
-    <div>
-      <label>Email</label>
-      <input type="email" formControlName="email" />
-      <div *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched">
-        Enter a valid email
+    <div class="card-body p-4">
+      <form [formGroup]="customerForm" (ngSubmit)="submit()" novalidate>
+
+        <!-- Name -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Name</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="Enter full name" />
+          <div *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched" class="text-danger mt-1 small">
+            <i class="fa-solid fa-circle-exclamation me-1"></i>Name is required
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email</label>
+          <input type="email" class="form-control" formControlName="email" placeholder="Enter email address" />
+          <div *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched" class="text-danger mt-1 small">
+            <i class="fa-solid fa-circle-exclamation me-1"></i>Enter a valid email
+          </div>
+        </div>
+
+        <!-- Aadhar Number -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Aadhar Number</label>
+          <input type="text" class="form-control" formControlName="adharNumber" placeholder="Enter 12-digit Aadhar number" />
+          <div *ngIf="customerForm.get('adharNumber')?.invalid && customerForm.get('adharNumber')?.touched" class="text-danger mt-1 small">
+            <i class="fa-solid fa-circle-exclamation me-1"></i>Aadhar must be 12 digits
+          </div>
+        </div>
+
+        <!-- Pending Balance -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Pending Balance</label>
+          <input type="number" class="form-control" formControlName="pendingBalance" placeholder="Enter pending balance amount" />
+          <div *ngIf="customerForm.get('pendingBalance')?.invalid && customerForm.get('pendingBalance')?.touched" class="text-danger mt-1 small">
+            <i class="fa-solid fa-circle-exclamation me-1"></i>Must be greater than 0
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-success px-4" [disabled]="customerForm.invalid">
+            <i class="fa-solid fa-plus me-2"></i>Add Customer
+          </button>
+        </div>
+      </form>
+
+      <!-- Success / Info Message -->
+      <div *ngIf="message" class="alert alert-info text-center mt-4 mb-0">
+        {{ message }}
       </div>
     </div>
-
-    <div>
-      <label>Adhar Number</label>
-      <input type="text" formControlName="adharNumber" />
-      <div *ngIf="customerForm.get('adharNumber')?.invalid && customerForm.get('adharNumber')?.touched">
-        Adhar must be 12 digits
-      </div>
-    </div>
-
-    <div>
-      <label>Pending Balance</label>
-      <input type="number" formControlName="pendingBalance" />
-      <div *ngIf="customerForm.get('pendingBalance')?.invalid && customerForm.get('pendingBalance')?.touched">
-        Must be greater than 0
-      </div>
-    </div>
-
-    <button type="submit" [disabled]="customerForm.invalid">Add Customer</button>
-  </form>
-
-  <p *ngIf="message" class="msg">{{ message }}</p>
+  </div>
 </div>

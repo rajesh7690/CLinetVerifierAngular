@@ -13,19 +13,13 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): boolean {
     const token = this.auth.getAccessToken();
-    if (token) {
-      const decoded = this.auth.decodeToken(token);
-      const expiry = (decoded?.exp??0) * 1000; // exp is in seconds
-      if (Date.now() < expiry) {
-        return true;
-      } else {
-        this.auth.logout();
-        this.router.navigate(['/login']);
-        return false;
-      }
+
+    if (!token) {
+      this.router.navigate(['/login']);
+      return false;
     }
-    this.router.navigate(['/login']);
-    return false;
+
+    return true;
   }
   parseJwt(token: string) {
     const payload = token.split('.')[1];           // JWT format: header.payload.signature
