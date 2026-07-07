@@ -1,29 +1,40 @@
-.dashboard-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #f9f9f9;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+.dashboard-shell {
+  background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
 }
 
-.dashboard-container h2 {
-  color: #333;
-  margin-bottom: 1rem;
+.hero-card,
+.stats-card,
+.mini-card {
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
-button {
-  margin-top: 1rem;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  background: #1976d2;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s;
+.hero-card {
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
 }
 
-button:hover {
-  background: #145ea8;
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.icon-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.table thead th {
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  border: 0;
 }

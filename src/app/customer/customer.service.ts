@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CustomerService {
-  private readonly apiUrl = 'https://localhost:7114/api/Customer';
+  private readonly apiUrl = 'https://localhost:44354/api/Customer';
 
   constructor(private http: HttpClient) {}
 
@@ -14,8 +14,15 @@ export class CustomerService {
     return this.http.post(`${this.apiUrl}/add`, { ...customer });
   }
 
-  getCustomers(): Observable<any> {
-    return this.http.get(`${this.apiUrl}`);
+  getCustomers(query?: string, globalSearch = false): Observable<any> {
+    const params: any = {};
+    if (query) {
+      params.query = query;
+    }
+    if (globalSearch) {
+      params.global = true;
+    }
+    return this.http.get(`${this.apiUrl}`, { params });
   }
 
   updateCustomer(id: number, customer: any): Observable<any> {

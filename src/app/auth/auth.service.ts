@@ -14,7 +14,7 @@ interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = 'https://localhost:7114/api/Shopkeeper';
+  private readonly apiUrl = 'https://localhost:44354/api/Shopkeeper';
 
   constructor(private http: HttpClient) { }
 

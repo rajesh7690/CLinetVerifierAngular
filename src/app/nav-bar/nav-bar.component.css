@@ -1,8 +1,38 @@
-.navbar-brand {
-  letter-spacing: 1px;
+.navbar-glow {
+  background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+  color: #fff;
+}
+
+.navbar-brand,
+.nav-link,
+.dropdown-toggle {
+  color: #f8fafc !important;
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+}
+
+.nav-link {
+  border-radius: 999px;
+  padding: 0.45rem 0.75rem;
+  transition: background 0.2s ease;
+}
+
+.nav-link:hover,
+.active-link {
+  background: rgba(255,255,255,0.16);
 }
 
 .dropdown-menu {
   min-width: 180px;
-  border-radius: 0.5rem;
+  border-radius: 0.8rem;
+  border: 0;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
 }

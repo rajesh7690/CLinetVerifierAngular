@@ -1,9 +1,10 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-3">
+<nav class="navbar navbar-expand-lg navbar-glow shadow-sm px-3">
   <div class="container-fluid">
-    <!-- Brand -->
-    <a class="navbar-brand fw-bold" routerLink="/dashboard">Dashboard</a>
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" routerLink="/dashboard">
+      <span class="brand-badge"><i class="fa-solid fa-store"></i></span>
+      <span>ClientVerifier</span>
+    </a>
 
-    <!-- Toggler for mobile -->
     <button
       class="navbar-toggler"
       type="button"
@@ -15,33 +16,25 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Navbar Content -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav align-items-center">
-
-        <!-- Search Bar -->
-        <li class="nav-item me-3">
-          <form class="d-flex">
-            <input
-              class="form-control form-control-sm me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search">
-            <button class="btn btn-outline-success btn-sm" type="submit">
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-          </form>
+      <ul class="navbar-nav align-items-center gap-2">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+            <i class="fa-solid fa-table-columns me-1"></i>Dashboard
+          </a>
         </li>
-
-        <!-- Add Customer Icon -->
-        <li class="nav-item me-3">
-          <a class="nav-link" routerLink="/add-customer" title="Add Customer">
-            <i class="fa-solid fa-user-plus fa-lg" style="color: #ffffff;"></i>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active-link">
+            <i class="fa-solid fa-users me-1"></i>Customers
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/add-customer" routerLinkActive="active-link">
+            <i class="fa-solid fa-user-plus me-1"></i>Add Customer
           </a>
         </li>
 
-        <!-- User Dropdown -->
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown ms-2">
           <a
             class="nav-link dropdown-toggle d-flex align-items-center"
             href="#"
@@ -49,21 +42,10 @@
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false">
-            <i class="fa-solid fa-user-circle fa-lg" style="color: #ffffff;"></i>
-            <span class="ms-2">{{ shopkeeperName }}</span>
+            <i class="fa-solid fa-circle-user me-2"></i>
+            <span>{{ shopkeeperName || 'Shopkeeper' }}</span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <!-- <li>
-              <a class="dropdown-item" routerLink="/profile">
-                <i class="fa-solid fa-id-badge me-2"></i>Profile
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" routerLink="/settings">
-                <i class="fa-solid fa-gear me-2"></i>Settings
-              </a>
-            </li>
-            <li><hr class="dropdown-divider"></li> -->
             <li>
               <button class="dropdown-item text-danger" type="button" (click)="logout()">
                 <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
@@ -71,7 +53,6 @@
             </li>
           </ul>
         </li>
-
       </ul>
     </div>
   </div>

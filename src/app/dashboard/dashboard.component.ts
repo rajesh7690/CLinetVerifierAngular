@@ -19,6 +19,8 @@ export class DashboardComponent implements OnInit {
   message = '';
   editingCustomerId: number | null = null;
   editForm: any = null;
+  searchTerm = '';
+  globalSearch = false;
 
   constructor(private auth: AuthService, private router: Router, private customerService: CustomerService) {}
 
@@ -37,9 +39,17 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  get totalPendingBalance(): number {
+    return this.customers.reduce((sum, customer) => sum + (Number(customer.pendingBalance) || 0), 0);
+  }
+
+  get searchModeLabel(): string {
+    return this.globalSearch ? 'Global lookup' : 'Your shop customers';
+  }
+
   loadCustomers(): void {
     this.loading = true;
-    this.customerService.getCustomers().subscribe({
+    this.customerService.getCustomers(this.searchTerm || undefined, this.globalSearch).subscribe({
       next: (res) => {
         this.customers = res?.data ?? [];
         this.loading = false;
@@ -49,6 +59,15 @@ export class DashboardComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  searchCustomers(): void {
+    this.loadCustomers();
+  }
+
+  toggleGlobalSearch(): void {
+    this.globalSearch = !this.globalSearch;
+    this.loadCustomers();
   }
 
   editCustomer(customer: any): void {

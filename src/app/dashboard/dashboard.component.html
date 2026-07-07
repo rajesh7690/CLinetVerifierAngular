@@ -1,68 +1,137 @@
-<div class="container mt-4">
-  <div class="card shadow-sm border-0 rounded-4">
-    <div class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center">
-      <h4 class="mb-0"><i class="fa-solid fa-users me-2"></i>Customer List</h4>
-      <a routerLink="/add-customer" class="btn btn-light btn-sm">Add Customer</a>
+<div class="dashboard-shell container py-4">
+  <div class="row g-4 mb-4">
+    <div class="col-lg-8">
+      <div class="hero-card shadow-sm rounded-4 p-4">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+          <div>
+            <p class="eyebrow mb-2">Welcome back</p>
+            <h2 class="fw-bold mb-1">{{ shopkeeperName || 'Shopkeeper' }}</h2>
+            <p class="text-muted mb-0">Track pending balances, discover customers quickly, and keep your list organized.</p>
+          </div>
+          <a routerLink="/add-customer" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-plus me-2"></i>Add Customer
+          </a>
+        </div>
+      </div>
     </div>
 
-    <div class="card-body">
-      <div *ngIf="message" class="alert alert-info">{{ message }}</div>
+    <div class="col-lg-4">
+      <div class="stats-card shadow-sm rounded-4 p-4 h-100">
+        <p class="eyebrow mb-2">Current view</p>
+        <h4 class="fw-bold mb-2">{{ searchModeLabel }}</h4>
+        <p class="text-muted mb-0">{{ globalSearch ? 'Searching across the wider customer base.' : 'Showing only your linked customers.' }}</p>
+      </div>
+    </div>
+  </div>
 
-      <div *ngIf="loading" class="text-muted">Loading customers...</div>
+  <div class="row g-4 mb-4">
+    <div class="col-md-6">
+      <div class="mini-card shadow-sm rounded-4 p-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="eyebrow mb-1">Customers</p>
+            <h3 class="fw-bold mb-0">{{ customers.length }}</h3>
+          </div>
+          <div class="icon-pill bg-primary-subtle text-primary"><i class="fa-solid fa-users"></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mini-card shadow-sm rounded-4 p-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <p class="eyebrow mb-1">Pending balance</p>
+            <h3 class="fw-bold mb-0">₹{{ totalPendingBalance }}</h3>
+          </div>
+          <div class="icon-pill bg-success-subtle text-success"><i class="fa-solid fa-wallet"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <table *ngIf="!loading" class="table table-hover align-middle">
-        <thead class="table-light">
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Aadhar</th>
-            <th>Pending Balance</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let customer of customers; let i = index">
-            <td>{{ i + 1 }}</td>
-            <td>
-              <span *ngIf="editingCustomerId !== customer.id">{{ customer.name }}</span>
-              <input *ngIf="editingCustomerId === customer.id" class="form-control form-control-sm" [(ngModel)]="editForm.name" />
-            </td>
-            <td>
-              <span *ngIf="editingCustomerId !== customer.id">{{ customer.email }}</span>
-              <input *ngIf="editingCustomerId === customer.id" class="form-control form-control-sm" [(ngModel)]="editForm.email" />
-            </td>
-            <td>
-              <span *ngIf="editingCustomerId !== customer.id">{{ customer.adharNumber }}</span>
-              <input *ngIf="editingCustomerId === customer.id" class="form-control form-control-sm" [(ngModel)]="editForm.adharNumber" />
-            </td>
-            <td>
-              <span *ngIf="editingCustomerId !== customer.id">₹{{ customer.pendingBalance }}</span>
-              <input *ngIf="editingCustomerId === customer.id" type="number" class="form-control form-control-sm" [(ngModel)]="editForm.pendingBalance" />
-            </td>
-            <td>
-              <ng-container *ngIf="editingCustomerId !== customer.id; else editActions">
-                <button class="btn btn-sm btn-outline-primary me-2" (click)="editCustomer(customer)">
-                  <i class="fa-solid fa-pen"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger" (click)="deleteCustomer(customer)">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </ng-container>
-              <ng-template #editActions>
-                <button class="btn btn-sm btn-success me-2" (click)="saveCustomer()">Save</button>
-                <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
-              </ng-template>
-            </td>
-          </tr>
+  <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+    <div class="card-header bg-white border-0 px-4 py-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <h4 class="mb-0 fw-bold"><i class="fa-solid fa-users me-2 text-primary"></i>Customer List</h4>
+        <p class="text-muted mb-0 small">Search by name, email or Aadhar</p>
+      </div>
+      <a routerLink="/add-customer" class="btn btn-outline-primary rounded-pill">Add Customer</a>
+    </div>
 
-          <tr *ngIf="customers.length === 0">
-            <td colspan="6" class="text-center text-muted py-4">
-              No customers found.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="card-body p-4">
+      <div *ngIf="message" class="alert alert-info rounded-3">{{ message }}</div>
+
+      <div class="row g-2 mb-3">
+        <div class="col-md-8">
+          <input class="form-control rounded-pill" [(ngModel)]="searchTerm" placeholder="Search by name, email or Aadhar" />
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-primary rounded-pill w-100" (click)="searchCustomers()">Search</button>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-secondary rounded-pill w-100" (click)="toggleGlobalSearch()">
+            {{ globalSearch ? 'Own Customers' : 'Global Search' }}
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="loading" class="text-muted py-3">Loading customers...</div>
+
+      <div *ngIf="!loading" class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Aadhar</th>
+              <th>Pending Balance</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let customer of customers; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <span *ngIf="editingCustomerId !== customer.id">{{ customer.name }}</span>
+                <input *ngIf="editingCustomerId === customer.id" class="form-control form-control-sm" [(ngModel)]="editForm.name" />
+              </td>
+              <td>
+                <span *ngIf="editingCustomerId !== customer.id">{{ customer.email }}</span>
+                <input *ngIf="editingCustomerId === customer.id" class="form-control form-control-sm" [(ngModel)]="editForm.email" />
+              </td>
+              <td>
+                <span *ngIf="editingCustomerId !== customer.id">{{ customer.adharNumber }}</span>
+                <input *ngIf="editingCustomerId === customer.id" class="form-control form-control-sm" [(ngModel)]="editForm.adharNumber" />
+              </td>
+              <td>
+                <span *ngIf="editingCustomerId !== customer.id">₹{{ customer.pendingBalance }}</span>
+                <input *ngIf="editingCustomerId === customer.id" type="number" class="form-control form-control-sm" [(ngModel)]="editForm.pendingBalance" />
+              </td>
+              <td>
+                <ng-container *ngIf="editingCustomerId !== customer.id; else editActions">
+                  <button class="btn btn-sm btn-outline-primary me-2" (click)="editCustomer(customer)">
+                    <i class="fa-solid fa-pen"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" (click)="deleteCustomer(customer)">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </ng-container>
+                <ng-template #editActions>
+                  <button class="btn btn-sm btn-success me-2" (click)="saveCustomer()">Save</button>
+                  <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+                </ng-template>
+              </td>
+            </tr>
+
+            <tr *ngIf="customers.length === 0">
+              <td colspan="6" class="text-center text-muted py-4">
+                No customers found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
