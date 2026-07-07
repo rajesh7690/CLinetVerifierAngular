@@ -14,12 +14,12 @@ interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:44354/api/Shopkeeper'; // your .NET API
+  private readonly apiUrl = 'https://localhost:7114/api/Shopkeeper';
 
   constructor(private http: HttpClient) { }
 
-  register(firstName: string, lastName: string, email: string,username:string, passwordHash: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, { firstName, lastName, email,username, passwordHash });
+  register(firstName: string, lastName: string, email: string, username: string, passwordHash: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, { firstName, lastName, email, username, passwordHash });
   }
 
   login(email: string, password: string): Observable<AuthResponse> {
@@ -27,12 +27,11 @@ export class AuthService {
   }
 
   refreshToken(): Observable<any> {
-    const Token = this.getAccessToken();
+    const token = this.getAccessToken();
     const refreshToken = this.getRefreshToken();
-    return this.http.post(`${this.apiUrl}/refresh`, { Token, refreshToken });
+    return this.http.post(`${this.apiUrl}/refresh`, { token, refreshToken });
   }
 
-  // store token in localStorage/sessionStorage
   setTokens(token: string, refreshToken: string) {
     localStorage.setItem('accessToken', token);
     localStorage.setItem('refreshToken', refreshToken);
@@ -49,6 +48,8 @@ export class AuthService {
   logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('shopkeeperName');
+    localStorage.removeItem('shopkeeperId');
   }
 
   decodeToken(token?: string): JwtPayload | null {
@@ -56,7 +57,7 @@ export class AuthService {
       const jwt = token || this.getAccessToken();
       if (!jwt) return null;
 
-      const payloadBase64 = jwt.split('.')[1]; // header.payload.signature
+      const payloadBase64 = jwt.split('.')[1];
       const payloadJson = atob(payloadBase64);
       return JSON.parse(payloadJson);
     } catch (error) {
@@ -64,5 +65,4 @@ export class AuthService {
       return null;
     }
   }
-
 }

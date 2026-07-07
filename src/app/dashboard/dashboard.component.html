@@ -2,10 +2,15 @@
   <div class="card shadow-sm border-0 rounded-4">
     <div class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center">
       <h4 class="mb-0"><i class="fa-solid fa-users me-2"></i>Customer List</h4>
+      <a routerLink="/add-customer" class="btn btn-light btn-sm">Add Customer</a>
     </div>
 
     <div class="card-body">
-      <table class="table table-hover align-middle">
+      <div *ngIf="message" class="alert alert-info">{{ message }}</div>
+
+      <div *ngIf="loading" class="text-muted">Loading customers...</div>
+
+      <table *ngIf="!loading" class="table table-hover align-middle">
         <thead class="table-light">
           <tr>
             <th>#</th>
@@ -19,17 +24,35 @@
         <tbody>
           <tr *ngFor="let customer of customers; let i = index">
             <td>{{ i + 1 }}</td>
-            <td>{{ customer.name }}</td>
-            <td>{{ customer.email }}</td>
-            <td>{{ customer.adharNumber }}</td>
-            <td>₹{{ customer.pendingBalance }}</td>
             <td>
-              <button class="btn btn-sm btn-outline-primary me-2" (click)="editCustomer(customer)">
-                <i class="fa-solid fa-pen"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger" (click)="deleteCustomer(customer)">
-                <i class="fa-solid fa-trash"></i>
-              </button>
+              <span *ngIf="editingCustomerId !== customer.id">{{ customer.name }}</span>
+              <input *ngIf="editingCustomerId === customer.id" class="form-control form-control-sm" [(ngModel)]="editForm.name" />
+            </td>
+            <td>
+              <span *ngIf="editingCustomerId !== customer.id">{{ customer.email }}</span>
+              <input *ngIf="editingCustomerId === customer.id" class="form-control form-control-sm" [(ngModel)]="editForm.email" />
+            </td>
+            <td>
+              <span *ngIf="editingCustomerId !== customer.id">{{ customer.adharNumber }}</span>
+              <input *ngIf="editingCustomerId === customer.id" class="form-control form-control-sm" [(ngModel)]="editForm.adharNumber" />
+            </td>
+            <td>
+              <span *ngIf="editingCustomerId !== customer.id">₹{{ customer.pendingBalance }}</span>
+              <input *ngIf="editingCustomerId === customer.id" type="number" class="form-control form-control-sm" [(ngModel)]="editForm.pendingBalance" />
+            </td>
+            <td>
+              <ng-container *ngIf="editingCustomerId !== customer.id; else editActions">
+                <button class="btn btn-sm btn-outline-primary me-2" (click)="editCustomer(customer)">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteCustomer(customer)">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </ng-container>
+              <ng-template #editActions>
+                <button class="btn btn-sm btn-success me-2" (click)="saveCustomer()">Save</button>
+                <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">Cancel</button>
+              </ng-template>
             </td>
           </tr>
 
