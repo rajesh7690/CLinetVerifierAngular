@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtPayload } from '../Model/commonModel';
 
 interface AuthResponse {
@@ -14,7 +14,9 @@ interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = 'https://clientverifierapi.onrender.com/api/Shopkeeper';
+  private readonly apiUrl = 'https://localhost:44354/api/Shopkeeper';
+  private readonly currentUserNameSubject = new BehaviorSubject<string | null>(this.getStoredUserName());
+  readonly currentUserName$ = this.currentUserNameSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -35,6 +37,7 @@ export class AuthService {
   setTokens(token: string, refreshToken: string) {
     localStorage.setItem('accessToken', token);
     localStorage.setItem('refreshToken', refreshToken);
+    this.setUserNameFromToken(token);
   }
 
   getAccessToken(): string | null {
@@ -45,11 +48,16 @@ export class AuthService {
     return localStorage.getItem('refreshToken');
   }
 
+  getShopkeeperName(): string | null {
+    return this.currentUserNameSubject.value ?? this.getStoredUserName();
+  }
+
   logout() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('shopkeeperName');
     localStorage.removeItem('shopkeeperId');
+    this.currentUserNameSubject.next(null);
   }
 
   decodeToken(token?: string): JwtPayload | null {
@@ -64,5 +72,23 @@ export class AuthService {
       console.error('Failed to decode JWT', error);
       return null;
     }
+  }
+
+  private setUserNameFromToken(token: string): void {
+    const payload = this.decodeToken(token);
+    const parsedName = this.buildDisplayName(payload);
+    const nameToStore = parsedName || 'Shopkeeper';
+    localStorage.setItem('shopkeeperName', nameToStore);
+    this.currentUserNameSubject.next(nameToStore);
+  }
+
+  private buildDisplayName(payload: JwtPayload | null): string {
+    const firstName = payload?.firstName ?? '';
+    const lastName = payload?.lastName ?? '';
+    return `${firstName} ${lastName}`.trim();
+  }
+
+  private getStoredUserName(): string | null {
+    return localStorage.getItem('shopkeeperName');
   }
 }

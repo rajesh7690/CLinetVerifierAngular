@@ -1,16 +1,22 @@
 <div class="auth-container">
   <div class="auth-card">
-    <h2>Register</h2>
+    <div class="brand-mark">CV</div>
+    <h2>Create account</h2>
+    <p class="auth-subtitle">Start organizing your client records and follow-ups in minutes.</p>
+
+    <div *ngIf="message" class="alert alert-info rounded-3">{{ message }}</div>
+
     <form [formGroup]="registerForm" (ngSubmit)="submit()" class="auth-form">
       <input type="text" formControlName="firstName" placeholder="First Name" />
       <input type="text" formControlName="lastName" placeholder="Last Name" />
       <input type="text" formControlName="username" placeholder="Username" />
-      <input type="email" formControlName="email" placeholder="Email" />
+      <input type="email" formControlName="email" placeholder="Email address" />
       <input type="password" formControlName="password" placeholder="Password" />
       <button type="submit">Register</button>
     </form>
+
     <div class="auth-footer">
-      Already have an account? <a routerLink="/login">Login</a>
+      Already have an account? <a routerLink="/login">Sign in</a>
     </div>
   </div>
 </div>

@@ -1,13 +1,19 @@
 <div class="auth-container">
   <div class="auth-card">
-    <h2>Login</h2>
+    <div class="brand-mark">CV</div>
+    <h2>Welcome back</h2>
+    <p class="auth-subtitle">Sign in to manage your customers and track outstanding balances.</p>
+
+    <div *ngIf="message" class="alert alert-danger rounded-3">{{ message }}</div>
+
     <form [formGroup]="loginForm" (ngSubmit)="submit()" class="auth-form">
-      <input type="email" formControlName="email" placeholder="Email" />
+      <input type="email" formControlName="email" placeholder="Email address" />
       <input type="password" formControlName="password" placeholder="Password" />
       <button type="submit">Login</button>
     </form>
+
     <div class="auth-footer">
-      Don’t have an account? <a routerLink="/register">Register</a>
+      Don’t have an account? <a routerLink="/register">Create one</a>
     </div>
   </div>
 </div>

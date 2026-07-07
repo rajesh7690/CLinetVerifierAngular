@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
@@ -8,11 +8,16 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
   shopkeeperName: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {
-    this.shopkeeperName = localStorage.getItem('shopkeeperName');
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.shopkeeperName = this.authService.getShopkeeperName();
+    this.authService.currentUserName$.subscribe((name) => {
+      this.shopkeeperName = name || this.authService.getShopkeeperName();
+    });
   }
 
   logout(): void {
