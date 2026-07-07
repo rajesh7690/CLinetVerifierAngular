@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CustomerService {
-  private readonly apiUrl = 'https://localhost:44354/api/Customer';
+  private readonly apiUrl = 'https://clientverifierapi.onrender.com/api/Customer';
 
   constructor(private http: HttpClient) {}
 
