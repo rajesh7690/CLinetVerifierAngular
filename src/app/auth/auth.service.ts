@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtPayload } from '../Model/commonModel';
+import { environment } from '../../environments/environment';
 
 interface AuthResponse {
   success: boolean;
@@ -14,7 +15,7 @@ interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = 'https://localhost:44354/api/Shopkeeper';
+  private readonly apiUrl = `${environment.apiBaseUrl}/api/Shopkeeper`;
   private readonly currentUserNameSubject = new BehaviorSubject<string | null>(this.getStoredUserName());
   readonly currentUserName$ = this.currentUserNameSubject.asObservable();
 
